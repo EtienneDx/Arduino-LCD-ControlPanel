@@ -17,13 +17,14 @@ class MenuItem
 {
 public:
 	MenuItem(char itemType, char *text);
-	MenuItem(char itemType, char *text, int value, int min, int max);
+	MenuItem(char itemType, char *text, int value, int min, int max, int step);
 	MenuItem(char itemType, char *text, void(*callback)());
 	char itemType;
 	char *text;
 	int value;
 	int _min;
 	int _max;
+	int step;//how much does one "next" change the value?
 	void(*callback)();
 };
 
@@ -42,10 +43,10 @@ public:
 private:
 	void changeVal(int v);
 	MenuItem *firstItem;
-	int length;
-	int actualLine;
-	int actualShift;
-	int row;
+	int length;//number of menu items
+	int actualLine;//the row on which the arrow is
+	int actualShift;//the number of the first row
+	int row;//number of rows displayed at once
 	int selected;
 	int enabled;
 };

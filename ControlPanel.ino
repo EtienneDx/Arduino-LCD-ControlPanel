@@ -1,5 +1,4 @@
 // include the library code
-#include <Wire.h> 
 #include "menu.h"
 
 /*******Menu*********/
@@ -7,9 +6,9 @@
 #define ITEM_COUNT 6
 MenuItem items[ITEM_COUNT]{
 	{ MENU_LABEL, "Controller"},
-	{ MENU_INT, "Red(/10)", 5, 0, 10 },
-	{ MENU_INT, "Green(/10)", 5, 0, 10 },
-	{ MENU_INT, "Blue(/10)", 5, 0, 10 },
+	{ MENU_INT, "Red(/10)", 5, 0, 10, 1 },
+	{ MENU_INT, "Green(/10)", 5, 0, 10, 1 },
+	{ MENU_INT, "Blue(/10)", 5, 0, 10, 1 },
 	{ MENU_BUTTON, "Blink LED twice", &doubleBlink },
 	{ MENU_TOGGLE, "LED 13 :" }, 
 };
