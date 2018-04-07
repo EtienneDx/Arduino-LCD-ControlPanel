@@ -34,7 +34,7 @@ Simply import the two files "menu.h" and "menu.cpp" into your project folder, an
 Here are the different Menu Items : 
 
     { MENU_LABEL, "your label" }
-    { MENU_INT, "your label", BASE_VALUE, MIN, MAX }
+    { MENU_INT, "your label", BASE_VALUE, MIN, MAX, STEP }
     { MENU_BUTTON, "your label", &callback } // callback being the name of a void function
     { MENU_TOGGLE, "your label" }
 
