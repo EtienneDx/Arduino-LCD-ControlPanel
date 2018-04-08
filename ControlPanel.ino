@@ -1,6 +1,11 @@
 // include the library code
 #include "menu.h"
 
+/******Buttons*******/
+#define NEXT_BUTTON 2
+#define PREV_BUTTON 4
+#define MAIN_BUTTON 3
+
 /*******Menu*********/
 
 #define ITEM_COUNT 6
@@ -13,15 +18,7 @@ MenuItem items[ITEM_COUNT]{
 	{ MENU_TOGGLE, "LED 13 :" }, 
 };
 
-Menu menu(0x27, 16, 2, &items[0], ITEM_COUNT);
-
-/******Buttons*******/
-#define NEXT_BUTTON 2
-#define PREV_BUTTON 4
-#define MAIN_BUTTON 3
-int lastN = LOW;
-int lastP = LOW;
-int lastM = LOW;
+Menu menu(0x27, 16, 2, &items[0], ITEM_COUNT, BUTTONS_MENU, NEXT_BUTTON, PREV_BUTTON, MAIN_BUTTON);
 
 /*******LEDs*******/
 #define RED A0
@@ -45,20 +42,7 @@ void setup()
 
 void loop()
 {
-	int n = digitalRead(NEXT_BUTTON);
-	int p = digitalRead(PREV_BUTTON);
-	int m = digitalRead(MAIN_BUTTON);
-
-	if (n != lastN && n)
-		menu.nextLine();
-	if (p != lastP && p)
-		menu.prevLine();
-	if (m != lastM && m)
-		menu.selectLine();
-
-	lastN = n;
-	lastP = p;
-	lastM = m;
+	menu.update();//needed to check the input buttons
 
 	analogWrite(RED, items[1].value * 1024 / 10);
 	analogWrite(GREEN, items[2].value * 1024 / 10);

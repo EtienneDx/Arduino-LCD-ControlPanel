@@ -1,3 +1,4 @@
+#include "Arduino.h"
 #include "menu.h"
 
 MenuItem::MenuItem(char itemType, char *text, int value, int min, int max, int step) : 
@@ -9,12 +10,24 @@ MenuItem::MenuItem(char itemType, char *text, void(*callback)()) :
 
 
 Menu::Menu(int adress, int col, int row, MenuItem *fItem, int length) :
-		lcd(adress, col, row), row(row), firstItem(fItem), length(length)
+	lcd(adress, col, row), row(row), firstItem(fItem), length(length)
 {
 	actualLine = 0;
 	actualShift = 0;
 	selected = 0;
 	enabled = 1;
+}
+Menu::Menu(int adress, int col, int row, MenuItem *fItem, int length, int type, int pinA, int pinB, int buttonPin) :
+	lcd(adress, col, row), row(row), firstItem(fItem), length(length), 
+	type(type), pinA(pinA), pinB(pinB), buttonPin(buttonPin)
+{
+	actualLine = 0;
+	actualShift = 0;
+	selected = 0;
+	enabled = 1;
+	lastA = 0;
+	lastB = 0;
+	lastMainButton = 0;
 }
 
 void Menu::init()// called in setup
@@ -143,4 +156,44 @@ void Menu::disable()
 void Menu::enable()
 {
 	enabled = 1;
+}
+
+void Menu::update()
+{
+	if (type == BUTTONS_MENU)
+	{
+		int n = digitalRead(pinA);// next button
+		int p = digitalRead(pinB);// prev button
+		int m = digitalRead(buttonPin);// main button
+
+		if (n != lastA && n)
+			nextLine();
+		if (p != lastB && p)
+			prevLine();
+		if (m != lastMainButton && m)
+			selectLine();
+
+		lastA = n;
+		lastB = p;
+		lastMainButton = m;
+	}
+	else if (type == ROTARY_ENCODER_MENU)
+	{
+		int a = digitalRead(pinA);
+		int m = digitalRead(buttonPin);// main button
+
+		if (a != lastA)// there has been a rotation
+		{
+			if (digitalRead(pinB) != a)// clockwise
+				nextLine();
+			else
+				prevLine();
+		}
+
+		if (m != lastMainButton && m)
+			selectLine();
+
+		lastA = a;
+		lastMainButton = m;
+	}
 }

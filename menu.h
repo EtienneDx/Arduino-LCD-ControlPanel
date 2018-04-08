@@ -9,6 +9,9 @@
 #define MENU_BUTTON 2
 #define MENU_TOGGLE 3
 
+#define BUTTONS_MENU 1
+#define ROTARY_ENCODER_MENU 2
+
 /*****End Constants******/
 
 #include <LiquidCrystal_I2C.h>
@@ -32,6 +35,7 @@ class Menu
 {
 public:
 	Menu(int adress, int col, int row, MenuItem* firstItem, int length);
+	Menu(int adress, int col, int row, MenuItem* firstItem, int length, int type, int pinA, int pinB, int buttonPin);
 	void init();
 	void display();
 	void nextLine();
@@ -40,6 +44,7 @@ public:
 	LiquidCrystal_I2C lcd;
 	void disable();
 	void enable();
+	void update();
 private:
 	void changeVal(int v);
 	MenuItem *firstItem;
@@ -49,6 +54,14 @@ private:
 	int row;//number of rows displayed at once
 	int selected;
 	int enabled;
+
+	int type;
+	int pinA;
+	int pinB;
+	int buttonPin;
+	int lastA;
+	int lastB;
+	int lastMainButton;
 };
 
 #endif
