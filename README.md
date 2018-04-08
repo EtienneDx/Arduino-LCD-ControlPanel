@@ -53,49 +53,23 @@ To access the value, simply get the field "value" from the object. For example :
     
 You can find more examples in the provided ino file ("ControlPanel.ino")
 
-For the input part, one way is to use three buttons : 
+For the inputs, you can use either a rotary encoder or three different buttons : 
 
-    /******Buttons*******/
+    //first solutions : three buttons
     #define NEXT_BUTTON 2
     #define PREV_BUTTON 4
     #define MAIN_BUTTON 3
-    int lastN = LOW;
-    int lastP = LOW;
-    int lastM = LOW;
     
+    Menu menu(0x27, 16, 2, &items[0], ITEM_COUNT, BUTTONS_MENU, NEXT_BUTTON, PREV_BUTTON, MAIN_BUTTON);
     
-    void setup()
-    {
-      menu.init();
-      pinMode(NEXT_BUTTON, INPUT);
-      pinMode(PREV_BUTTON, INPUT);
-      pinMode(MAIN_BUTTON, INPUT);
-    }
+    //second solution : rotary encoder
+    //I haven't been able to test this since I don't own any rotary encoder for the time being, but it should work...
+    #define PIN_A 2
+    #define PIN_B 4
+    #define BUTTON_PIN 3
     
-    void loop()
-    {
-      // read buttons value
-      int n = digitalRead(NEXT_BUTTON);
-      int p = digitalRead(PREV_BUTTON);
-      int m = digitalRead(MAIN_BUTTON);
-      
-      // compare with last values, and if needed, update the menu
-      if (n != lastN && n)
-        menu.nextLine();
-      if (p != lastP && p)
-        menu.prevLine();
-      if (m != lastM && m)
-        menu.selectLine();
-      
-      //update the last values
-      lastN = n;
-      lastP = p;
-      lastM = m;
-      
-      delay(20);
-    }
+    Menu menu(0x27, 16, 2, &items[0], ITEM_COUNT, ROTARY_ENCODER_MENU, PIN_A, PIN_B, BUTTON_PIN);
     
-Another way would be to use a rotary encoder. I'll post the code as soon as I get one.
 
 ## Other Infos
 
